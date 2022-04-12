@@ -6,7 +6,6 @@ setup(name="finance_apis",
     author="kheuer",
     author_email="",
     url="",
-    packages=["finance_apis"],
     install_requires=["distutils", "json", "datetime", "requests", "time"]
     )
 
