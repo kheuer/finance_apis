@@ -16,7 +16,7 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 import matplotlib.pyplot as plt
 import json
 import numpy as np
-from auxiliary_functions import is_number, get_api_key
+from auxiliary_functions import is_number
 
 
 class InvalidResponse(Exception):
@@ -431,9 +431,9 @@ class FinancialModelingPrep:
     """
 
 class ReverseEngineered:
-    def __init__(self):
+    def __init__(self, fmp_key):
         self.executor = ThreadPoolExecutor(max_workers=10)
-        self.fmp = FinancialModelingPrep(get_api_key("FinancialModelingPrep"))
+        self.fmp = FinancialModelingPrep(fmp_key)
 
     def make_request(self, url):
         response = requests.get(url).json()
@@ -527,6 +527,25 @@ class ReverseEngineered:
                 result = task.result()
                 response[result[0]] = result[1]
             except:
-                print(f"Error occured: {task.exception()}. excluding result from answer.")
+                print(f"Error occurred: {task.exception()}. excluding result from answer.")
         return response
+
+class APIS:
+    def __init__(self, apis):
+        self.apis = apis
+
+    def call(self, fn, *args, **kwargs):
+        not_have_function = []
+        invalid_requests = []
+        invalid_responses = []
+        for api in self.apis:
+            try:
+                return getattr(api, fn)(*args, **kwargs)
+            except AttributeError:
+                not_have_function.append(api)
+            except InvalidResponse:
+                invalid_responses.append(api)
+            except InvalidRequest:
+                invalid_requests.append(api)
+        raise InvalidRequest(f"No valid response, not_have_function: {not_have_function}, invalid_requests: {invalid_requests}, invalid_responses: {invalid_responses}")
 
