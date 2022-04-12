@@ -5,7 +5,6 @@ setup(name="finance_apis",
     description="Api classes to serve data from financial apis",
     author="kheuer",
     author_email="",
-    url="",
-    packages=["distutils", "json", "datetime", "requests", "time"]
+    url=""
     )
 
