@@ -1,7 +1,7 @@
 from distutils.core import setup
 
-setup(name="finance_apis",
-    version="1.0.0",
+setup(name="finapi",
+    version="v1.0.0",
     description="Api classes to serve data from financial apis",
     author="kheuer",
     author_email="",
